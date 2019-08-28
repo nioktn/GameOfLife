@@ -13,6 +13,16 @@
 
         public bool IsAlive { get; set; }
 
+        //public override bool Equals(object obj)
+        //{
+        //    if (!(obj is Cell))
+        //        return false;
+
+        //    Cell cell = (Cell)obj;
+        //    return this.IsAlive == cell.IsAlive;
+
+        //}
+
         private (int, int)[] GetNeighbours((int, int) cellIndexes, int matrixOrder)
         {
             var border = matrixOrder - 1;

@@ -11,7 +11,7 @@ namespace GameOfLife
             return cell.NeighboursIndexes.Count(indexTuple => previousGen[indexTuple.Item1, indexTuple.Item2].IsAlive == true);
         }
 
-        public void BornOfCell(Cell[,] previousGen, Cell[,] currentGen, (int, int) cellIndex)
+        public bool BornOfCell(Cell[,] previousGen, Cell[,] currentGen, (int, int) cellIndex)
         {
             var aliveNeighbours = AliveCellNeighbours(previousGen, cellIndex);
 
@@ -19,9 +19,11 @@ namespace GameOfLife
             {
                 currentGen[cellIndex.Item1, cellIndex.Item2].IsAlive = true;
             }
+
+            return true;
         }
 
-        public void DeathOfCell(Cell[,] previousGen, Cell[,] currentGen, (int, int) cellIndex)
+        public bool DeathOfCell(Cell[,] previousGen, Cell[,] currentGen, (int, int) cellIndex)
         {
             var aliveNeighbours = AliveCellNeighbours(previousGen, cellIndex);
 
@@ -29,6 +31,23 @@ namespace GameOfLife
             {
                 currentGen[cellIndex.Item1, cellIndex.Item2].IsAlive = false;
             }
+
+            return true;
+        }
+
+        public bool StaleStateOfCells(Cell[,] previousGen, Cell[,] currentGen, (int, int) cellIndex)
+        {
+            for (int i = 0; i < previousGen.GetLength(0); i++)
+            {
+                for (int j = 0; j < previousGen.GetLength(1); j++)
+                {
+                    if (previousGen[i, j].IsAlive != currentGen[i, j].IsAlive)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

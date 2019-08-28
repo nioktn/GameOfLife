@@ -4,7 +4,13 @@ namespace GameOfLife
 {
     public class GameProcessor
     {
-        public void Evolve(Cell[,] currentGen, int matrixSize, Action<Cell[,], Cell[,], (int, int)> evolveCondition)
+        private bool _gameRunning;
+        public GameProcessor()
+        {
+            _gameRunning = true;
+        }
+
+        public bool Evolve(Cell[,] currentGen, int matrixSize, Func<Cell[,], Cell[,], (int, int), bool> evolveCondition)
         {
             var previousGen = (Cell[,])currentGen.Clone();
 
@@ -12,9 +18,11 @@ namespace GameOfLife
             {
                 for (int j = 0; j < matrixSize; j++)
                 {
-                    evolveCondition(previousGen, currentGen, (i, j));
+                    _gameRunning = evolveCondition(previousGen, currentGen, (i, j));
                 }
             }
+
+            return _gameRunning;
         }
     }
 }
